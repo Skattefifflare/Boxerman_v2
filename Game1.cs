@@ -17,7 +17,7 @@ namespace Boxerman_v2 {
         public static KeyboardState kstate;
 
         Boxer p1;
-        Boxer p2;
+        //Boxer p2;
 
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
@@ -26,9 +26,9 @@ namespace Boxerman_v2 {
         }
 
         protected override void Initialize() {
-
+            gd = GraphicsDevice;
             p1 = new Boxer(true, 10);
-
+            //p2 = new Boxer(false, 60);
             
 
             base.Initialize();
@@ -60,18 +60,23 @@ namespace Boxerman_v2 {
             timedif = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             kstate = Keyboard.GetState();
-            
+            p1.Boxerloop();
+            //p2.Boxerloop();
 
 
             base.Update(gameTime);
         }
 
+        void Hitcheck(ref Boxer hitter, ref Boxer punched) {
+
+        }
+        // SUCKER PUNCH!!!
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(new Color(41, 44, 51));
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(scale));
 
-            _spriteBatch.Draw(, new Vector2(9.4f, 2), null, Color.White, 0f, Vector2.Zero, new Vector2(0.25f, 0.25f), SpriteEffects.None, 0f);
+            _spriteBatch.Draw(p1.currentsprite, new Vector2(9.4f, 2), null, Color.White);
 
 
             _spriteBatch.End();
