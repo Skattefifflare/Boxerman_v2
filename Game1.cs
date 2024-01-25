@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using static System.Formats.Asn1.AsnWriter;
+using System.Threading;
 
 namespace Boxerman_v2 {
     public class Game1 : Game {
@@ -13,6 +14,10 @@ namespace Boxerman_v2 {
 
         public static float timedif;
         public static GraphicsDevice gd;
+        public static KeyboardState kstate;
+
+        Boxer p1;
+        Boxer p2;
 
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
@@ -21,11 +26,17 @@ namespace Boxerman_v2 {
         }
 
         protected override void Initialize() {
+
+            p1 = new Boxer(true, 10);
+
+            
+
             base.Initialize();
         }
 
         protected override void LoadContent() {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            
             int referenceWidth = 80;
             int referenceHeight = 60;
             _graphics.PreferredBackBufferWidth = 80 * 8;
@@ -48,7 +59,8 @@ namespace Boxerman_v2 {
 
             timedif = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            var kstate = Keyboard.GetState();
+            kstate = Keyboard.GetState();
+            
 
 
             base.Update(gameTime);
@@ -58,6 +70,9 @@ namespace Boxerman_v2 {
             GraphicsDevice.Clear(new Color(41, 44, 51));
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(scale));
+
+            _spriteBatch.Draw(, new Vector2(9.4f, 2), null, Color.White, 0f, Vector2.Zero, new Vector2(0.25f, 0.25f), SpriteEffects.None, 0f);
+
 
             _spriteBatch.End();
 
