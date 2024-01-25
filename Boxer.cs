@@ -111,7 +111,7 @@ namespace Boxerman_v2 {
                         }
                         break;
                 }
-                if (!actionthread.IsAlive) {
+                if (!actionthread.IsAlive || currentaction != Idle) {
                     actionthread = new Thread(() => currentaction());
                     actionthread.Start();
                 }                            
@@ -128,17 +128,18 @@ namespace Boxerman_v2 {
         }
         void Jab() {
             int i = 0;
-            while (!hasDoneHit || i <= 7) {
+            while (!hasDoneHit && i <= 7) {
                 currentsprite = spritematrix[1][i];
-                Thread.Sleep(15);
+                Thread.Sleep(20);
                 i++;
             }
             i--;
             while (i > 0) {
                 currentsprite = spritematrix[1][i];
-                Thread.Sleep(15);
+                Thread.Sleep(20);
                 i--;
             }
+            Thread.Sleep(200);
             // hitcheckern måste på något sätt säga till Jab att den har träffat och att animationen ska börja spelas i reverse
             // spriten ska börja reversas när man träffar
         }
