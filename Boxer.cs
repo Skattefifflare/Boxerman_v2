@@ -21,9 +21,13 @@ namespace Boxerman_v2 {
         public bool facingright;
         public float pos;
 
-        int health;
-        int stamina;
-        int resilience;
+        public int health;
+        public int stamina;
+        public int resilience;
+
+        public Texture2D smallbar;
+        public Texture2D bigbar;
+        public Texture2D blip;
 
         List<List<Texture2D>> spritematrix;
 
@@ -40,6 +44,10 @@ namespace Boxerman_v2 {
             health = 100;
             stamina = 100;
             resilience = 0;
+
+            smallbar = Texture2D.FromFile(graphicsDevice, "../../../boxer/smallbar.png");
+            bigbar = Texture2D.FromFile(graphicsDevice, "../../../boxer/bigbar.png");
+            blip = Texture2D.FromFile(graphicsDevice, "../../../boxer/blip.png");
 
             spritematrix = new List<List<Texture2D>> {
                 new List<Texture2D>{

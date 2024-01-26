@@ -19,6 +19,8 @@ namespace Boxerman_v2 {
         Boxer p1;
         Boxer p2;
 
+
+
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -29,7 +31,6 @@ namespace Boxerman_v2 {
             gd = GraphicsDevice;
             p1 = new Boxer(true, 10);
             p2 = new Boxer(false, 60);
-            
 
             base.Initialize();
         }
@@ -39,8 +40,8 @@ namespace Boxerman_v2 {
             
             int referenceWidth = 80;
             int referenceHeight = 60;
-            _graphics.PreferredBackBufferWidth = 80 * 8;
-            _graphics.PreferredBackBufferHeight = 60 * 8;
+            _graphics.PreferredBackBufferWidth = 80 * 10;
+            _graphics.PreferredBackBufferHeight = 60 * 10;
             // _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             UpdateScale(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, referenceWidth, referenceHeight);
@@ -97,9 +98,26 @@ namespace Boxerman_v2 {
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(scale));
 
-            _spriteBatch.Draw(p1.currentsprite, new Vector2(p1.pos, 60-22), null, Color.White);
-            _spriteBatch.Draw(p2.currentsprite, new Vector2(p2.pos, 60 - 22), null, Color.White);
 
+
+            _spriteBatch.Draw(p1.bigbar, new Vector2(7, 4), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.None, 0f);
+            _spriteBatch.Draw(p1.blip, new Vector2(7.3f, 4.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f * p1.health, 0.3f), SpriteEffects.None, 0f);
+
+            _spriteBatch.Draw(p1.smallbar, new Vector2(7, 7), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.None, 0f);
+            _spriteBatch.Draw(p1.blip, new Vector2(7.3f, 7.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.15f * p1.stamina, 0.18f), SpriteEffects.None, 0f);
+
+
+            _spriteBatch.Draw(p2.bigbar, new Vector2(42, 4), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.FlipHorizontally, 0f);
+            _spriteBatch.Draw(p2.blip, new Vector2(42.3f, 4.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f * p2.health, 0.3f), SpriteEffects.FlipHorizontally, 0f);
+
+            _spriteBatch.Draw(p2.smallbar, new Vector2(57, 7), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.FlipHorizontally, 0f);
+            _spriteBatch.Draw(p2.blip, new Vector2(57.3f, 7.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.15f * p2.stamina, 0.18f), SpriteEffects.FlipHorizontally, 0f);
+
+
+            _spriteBatch.Draw(p1.currentsprite, new Vector2(p1.pos, 60 - 22), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            _spriteBatch.Draw(p2.currentsprite, new Vector2(p2.pos, 60 - 22), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+
+            
 
             _spriteBatch.End();
 
