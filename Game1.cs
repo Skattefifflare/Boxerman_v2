@@ -65,6 +65,7 @@ namespace Boxerman_v2 {
             p1.Boxerloop();
 
             //p2.Boxerloop();
+            /*
             Color[] pixels = new Color[p1.currentsprite.Width * p1.currentsprite.Height];
             p1.currentsprite.GetData(pixels);
             for (int y = 0; y < p1.currentsprite.Height; y++) {
@@ -82,7 +83,7 @@ namespace Boxerman_v2 {
                     break; // Found the rightmost pixel, no need to continue searching
             }
             // använd lambda för att hitta pixeln med rätt färg som är sist i arrayen och sedan gör mafs för att lista ut dess x-position
-
+            */
 
             base.Update(gameTime);
         }
@@ -96,7 +97,7 @@ namespace Boxerman_v2 {
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(scale));
 
-            _spriteBatch.Draw(p1.currentsprite, new Vector2(9.4f, 60-22), null, Color.White);
+            _spriteBatch.Draw(p1.currentsprite, new Vector2(p1.pos, 60-22), null, Color.White);
 
 
             _spriteBatch.End();

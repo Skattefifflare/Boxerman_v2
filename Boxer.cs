@@ -14,6 +14,7 @@ namespace Boxerman_v2 {
         Action currentaction;
         Thread actionthread;
         public bool hasDoneHit;
+        public bool gotHit;
 
         public bool facingright;
         public float pos;
@@ -80,13 +81,20 @@ namespace Boxerman_v2 {
         public Texture2D currentsprite;
         
         
-        public void Boxerloop() {          
-            if (!actionthread.IsAlive || currentaction == Idle) {
+        public void Boxerloop() { 
+            if (gotHit && currentaction != GotHit) {
+                currentaction = GotHit;
+                actionthread = new Thread(() => currentaction());
+                actionthread.Start();
+            }
+            else if (!actionthread.IsAlive || currentaction == Idle) {
                 var kstate = Game1.kstate;
                 switch (kstate) {
-                    case var _ when kstate.IsKeyDown(Keys.E):                       // Jab
-                        currentaction = Jab;
-                        break;
+                    case var _ when kstate.IsKeyDown(Keys.E):                        
+                        if (stamina > 10) {
+                            currentaction = Jab;
+                        }
+                        break;                   // Jab 
                     case var _ when kstate.IsKeyDown(Keys.Q):                     // Uppercut
                         currentaction = Uppercut;
                         break;
@@ -97,10 +105,10 @@ namespace Boxerman_v2 {
                         currentaction = Block;
                         break;
                     case var _ when kstate.IsKeyDown(Keys.D):               // Forward
-                        currentaction = Forward;
+                        currentaction = (facingright) ? Right : Left;
                         break;
                     case var _ when kstate.IsKeyDown(Keys.A):             // Backward
-                        currentaction = Backward;
+                        currentaction = (facingright) ? Left : Right;
                         break;
                     case var _ when kstate.IsKeyDown(Keys.LeftControl): // Dodge
                         currentaction = Dodge;
@@ -111,20 +119,21 @@ namespace Boxerman_v2 {
                         }
                         break;
                 }
+
                 if (!actionthread.IsAlive || currentaction != Idle) {
                     actionthread = new Thread(() => currentaction());
                     actionthread.Start();
                 }                            
-            }
+            }                       
         }
-        // actionmetoderna kommer kallas som trådar och köras kontinuerligt tills de är klara
+        // actionmetoderna kommer kallas som trådar och köras tills de är klara
         
 
         void Idle() {
             currentsprite = spritematrix[0][0];
-            Thread.Sleep(300);
+            Thread.Sleep(400);
             currentsprite = spritematrix[0][1];
-            Thread.Sleep(300);
+            Thread.Sleep(400);
         }
         void Jab() {
             int i = 0;
@@ -134,6 +143,11 @@ namespace Boxerman_v2 {
                 i++;
             }
             i--;
+            Console.Beep(600, 20);
+            Console.Beep(500, 20);
+            Console.Beep(400, 20);
+            Console.Beep(300, 20);
+            Console.Beep(200, 20);
             while (i > 0) {
                 currentsprite = spritematrix[1][i];
                 Thread.Sleep(20);
@@ -152,23 +166,28 @@ namespace Boxerman_v2 {
         void Block() {
 
         }
-        void Forward() {
-
+        void Right() {
+            float init_pos = pos;
+            while (pos < init_pos + 4) {
+                pos += 0.08f;
+                Thread.Sleep(2);
+            }  
         }
-        void Backward() {
-
+        void Left() {
+            float init_pos = pos;
+            while (pos > init_pos - 4) {
+                pos -= 0.08f;
+                Thread.Sleep(2);
+            }
         }       
         void Dodge() {
 
         }
+        void GotHit() {
+            // kod...
 
-
-        void Animate(List<Texture2D> sprites, int sleep) {
-            foreach (var sprite in sprites) { 
-                currentsprite = sprite;
-                Thread.Sleep(sleep);
-            }           
-        }  
+            gotHit = false;
+        }
     }
     
 }
