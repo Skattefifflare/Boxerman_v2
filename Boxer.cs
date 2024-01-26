@@ -40,59 +40,57 @@ namespace Boxerman_v2 {
             health = 100;
             stamina = 100;
             resilience = 0;
-          
-            string folder = (dir) ? "p1" : "p2";
 
             spritematrix = new List<List<Texture2D>> {
                 new List<Texture2D>{
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Idle/Idle0.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Idle/Idle1.png")
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Idle/Idle0.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Idle/Idle1.png")
                 },// 0 : Idle
                 new List<Texture2D>{
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Jab/Jab0.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Jab/Jab1.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Jab/Jab2.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Jab/Jab3.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Jab/Jab4.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Jab/Jab5.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Jab/Jab6.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Jab/Jab7.png")
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Jab/Jab0.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Jab/Jab1.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Jab/Jab2.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Jab/Jab3.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Jab/Jab4.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Jab/Jab5.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Jab/Jab6.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Jab/Jab7.png")
                 },// 1 : Jab
                 
                 new List<Texture2D>{
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut0.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut1.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut2.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut3.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut4.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut5.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut6.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut7.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut8.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut9.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut10.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut11.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut12.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut13.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut14.png")
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut0.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut1.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut2.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut3.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut4.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut5.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut6.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut7.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut8.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut9.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut10.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut11.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut12.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut13.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut14.png")
 
                 },// 2 : Uppercut           
                 new List<Texture2D>{
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Idle/Idle0.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Idle/Idle0.png"),
                 },// 3 : Hook
                 new List<Texture2D>{
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Block/Block0.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Block/Block1.png"),
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Block/Block2.png")
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Block/Block0.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Block/Block1.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Block/Block2.png")
                 },// 4 : Block
                 new List<Texture2D>{
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Idle/Idle0.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Idle/Idle0.png"),
                 },// 5 : Forward
                 new List<Texture2D>{
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Idle/Idle0.png"),
+                    Texture2D.FromFile(graphicsDevice, "../../../boxer/Idle/Idle0.png"),
                 },// 6 : Backward
                 new List<Texture2D>{
-                    Texture2D.FromFile(graphicsDevice, $"{folder}/Idle/Idle0.png"),
+                    Texture2D.FromFile(graphicsDevice, $"../../../boxer/Idle/Idle0.png"),
                 } // 7 : Dodge              
             }; 
         }
