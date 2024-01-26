@@ -19,6 +19,7 @@ namespace Boxerman_v2 {
         Boxer p1;
         Boxer p2;
 
+        Effect effect1;
 
 
         public Game1() {
@@ -31,6 +32,8 @@ namespace Boxerman_v2 {
             gd = GraphicsDevice;
             p1 = new Boxer(true, 10);
             p2 = new Boxer(false, 60);
+
+            effect1 = Content.Load<Effect>("HueShader2");
 
             base.Initialize();
         }
@@ -96,7 +99,7 @@ namespace Boxerman_v2 {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(new Color(41, 44, 51));
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(scale));
+            _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, effect1, Matrix.CreateScale(scale));
 
 
 
