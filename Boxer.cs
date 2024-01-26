@@ -15,6 +15,8 @@ namespace Boxerman_v2 {
         Thread actionthread;
         public bool hasDoneHit;
         public bool gotHit;
+        public bool isBlocking;
+        KeyboardState kstate;
 
         public bool facingright;
         public float pos;
@@ -29,6 +31,8 @@ namespace Boxerman_v2 {
             currentaction = Idle;
             actionthread = new Thread(() => currentaction());
             hasDoneHit = false;
+            isBlocking = false;
+            
 
             facingright = dir;
             this.pos = pos;
@@ -53,27 +57,43 @@ namespace Boxerman_v2 {
                     Texture2D.FromFile(graphicsDevice, $"{folder}/Jab/Jab5.png"),
                     Texture2D.FromFile(graphicsDevice, $"{folder}/Jab/Jab6.png"),
                     Texture2D.FromFile(graphicsDevice, $"{folder}/Jab/Jab7.png")
-                }// 1 : Jab
-                /*
-                new List<Texture2D>{
-                    // Texture2D.FromFile(graphicsDevice, $"{folder}/")
-                },// 2 : Uppercut
-                new List<Texture2D>{
+                },// 1 : Jab
                 
+                new List<Texture2D>{
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut0.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut1.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut2.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut3.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut4.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut5.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut6.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut7.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut8.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut9.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut10.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut11.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut12.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut13.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Uppercut/Uppercut14.png")
+
+                },// 2 : Uppercut           
+                new List<Texture2D>{
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Idle/Idle0.png"),
                 },// 3 : Hook
                 new List<Texture2D>{
-                
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Block/Block0.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Block/Block1.png"),
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Block/Block2.png")
                 },// 4 : Block
                 new List<Texture2D>{
-                
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Idle/Idle0.png"),
                 },// 5 : Forward
                 new List<Texture2D>{
-                
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Idle/Idle0.png"),
                 },// 6 : Backward
                 new List<Texture2D>{
-                
-                } // 7 : Dodge
-                */
+                    Texture2D.FromFile(graphicsDevice, $"{folder}/Idle/Idle0.png"),
+                } // 7 : Dodge              
             }; 
         }
 
@@ -88,7 +108,7 @@ namespace Boxerman_v2 {
                 actionthread.Start();
             }
             else if (!actionthread.IsAlive || currentaction == Idle) {
-                var kstate = Game1.kstate;
+                kstate = Game1.kstate;
                 switch (kstate) {
                     case var _ when kstate.IsKeyDown(Keys.E):                        
                         if (stamina > 10) {
@@ -143,28 +163,44 @@ namespace Boxerman_v2 {
                 i++;
             }
             i--;
-            Console.Beep(600, 20);
-            Console.Beep(500, 20);
-            Console.Beep(400, 20);
-            Console.Beep(300, 20);
-            Console.Beep(200, 20);
             while (i > 0) {
                 currentsprite = spritematrix[1][i];
                 Thread.Sleep(20);
                 i--;
             }
-            Thread.Sleep(200);
+            Thread.Sleep(100);
             // hitcheckern måste på något sätt säga till Jab att den har träffat och att animationen ska börja spelas i reverse
             // spriten ska börja reversas när man träffar
         }
         void Uppercut() {
-
+            int i = 0;
+            while (!hasDoneHit && i <= 14) {
+                currentsprite = spritematrix[2][i];
+                Thread.Sleep(25);
+                i++;
+            }
+            
+            Thread.Sleep(100);
         }
         void Hook() {
 
         }
         void Block() {
-
+            currentsprite = spritematrix[4][0];
+            Thread.Sleep(10);
+            currentsprite = spritematrix[4][1];
+            Thread.Sleep(10);
+            currentsprite = spritematrix[4][2];  
+            isBlocking = true;
+            while (kstate.IsKeyDown(Keys.LeftShift)) {
+                kstate = Game1.kstate;
+                currentsprite = spritematrix[4][2]; // behövs för ett edge-case
+            }
+            isBlocking = false;
+            currentsprite = spritematrix[4][1];
+            Thread.Sleep(10);
+            currentsprite = spritematrix[4][0];
+            
         }
         void Right() {
             float init_pos = pos;

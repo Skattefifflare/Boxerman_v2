@@ -17,7 +17,7 @@ namespace Boxerman_v2 {
         public static KeyboardState kstate;
 
         Boxer p1;
-        //Boxer p2;
+        Boxer p2;
 
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
@@ -28,7 +28,7 @@ namespace Boxerman_v2 {
         protected override void Initialize() {
             gd = GraphicsDevice;
             p1 = new Boxer(true, 10);
-            //p2 = new Boxer(false, 60);
+            p2 = new Boxer(false, 60);
             
 
             base.Initialize();
@@ -59,10 +59,10 @@ namespace Boxerman_v2 {
 
             timedif = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            int targetColor = 0x994e41;
-            int rightmostX = -1;
+            
             kstate = Keyboard.GetState();
             p1.Boxerloop();
+            p2.Boxerloop();
 
             //p2.Boxerloop();
             /*
@@ -98,6 +98,7 @@ namespace Boxerman_v2 {
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(scale));
 
             _spriteBatch.Draw(p1.currentsprite, new Vector2(p1.pos, 60-22), null, Color.White);
+            _spriteBatch.Draw(p2.currentsprite, new Vector2(p2.pos, 60 - 22), null, Color.White);
 
 
             _spriteBatch.End();
