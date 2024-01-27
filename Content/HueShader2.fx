@@ -9,10 +9,6 @@
 
 Texture2D SpriteTexture;
 
-int changeR;
-int changeG;
-int changeB;
-
 
 sampler2D SpriteTextureSampler = sampler_state
 {
@@ -33,27 +29,30 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 	
     if (col.r != 0 && col.g != 0 && col.b != 0)
     {
-        if (col.r == 153 && col.g == 78 && col.b == 65)
+        if (col.r == 0.6)
         {
-            col.r = 203;
-            col.g = 158;
-            col.b = 65;
+            //153, 78, 65
+            col.r = 0.796;
+            col.g = 0.62;
+            col.b = 0.255;
+            //203, 158, 65
+        }        
+        // breakpoints nås aldrig
+        else if (col.r >= 0.45 && col.r <= 0.46)
+        {   
+            //117, 60, 50            
+            col.r = .65;
+            col.g = .47;
+            col.b = .19;
+            //167, 120, 50
         }
         
-        // FUNKAR INTE VARFÖR??!!
-        // breakpoints nås aldrig
-        else if (col.r == 117 && col.g == 60 && col.b == 50)
-        {
-            // && col.g == 60 && col.b == 50
-            col.r = 167;
-            col.g = 120;
-            col.b = 50;
-        }
         else
         {
             col.r *= 1;
             col.g *= 0.8682;
             col.b *= 1.5057;
+
         }
         
     }
