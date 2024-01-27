@@ -9,6 +9,11 @@
 
 Texture2D SpriteTexture;
 
+int changeR;
+int changeG;
+int changeB;
+
+
 sampler2D SpriteTextureSampler = sampler_state
 {
 	Texture = <SpriteTexture>;
@@ -26,10 +31,34 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 	// return tex2D(SpriteTextureSampler,input.TextureCoordinates) * input.Color;
     float4 col = tex2D(SpriteTextureSampler, input.TextureCoordinates) * input.Color;
 	
+    if (col.r != 0 && col.g != 0 && col.b != 0)
+    {
+        if (col.r == 153 && col.g == 78 && col.b == 65)
+        {
+            col.r = 203;
+            col.g = 158;
+            col.b = 65;
+        }
+        
+        // FUNKAR INTE VARFÖR??!!
+        // breakpoints nås aldrig
+        else if (col.r == 117 && col.g == 60 && col.b == 50)
+        {
+            // && col.g == 60 && col.b == 50
+            col.r = 167;
+            col.g = 120;
+            col.b = 50;
+        }
+        else
+        {
+            col.r *= 1;
+            col.g *= 0.8682;
+            col.b *= 1.5057;
+        }
+        
+    }
+    
 	
-    col.rgb = (col.r + col.g + col.b);
-    col.r = (col.r * 2);
-	// hur skickar jag params?
     return col;
 
 }
