@@ -97,10 +97,16 @@ namespace Boxerman_v2 {
             float hitterGlove;
             float punchedHead;
 
-            Color[] pixels = new Color[hitter.currentsprite.Width * hitter.currentsprite.Height];
-            hitter.currentsprite.GetData(pixels);
-            // kontrukta array med arrays som är alla horisontella segment av spriten och sedan hitta den array med en r'tt f'rgad pixel längst ut
+            Color glovecolor = new Color(153, 78, 65);
+            Color headcolor = new Color(88, 129, 87);
 
+            Color[] hitterpixels = new Color[hitter.currentsprite.Width * hitter.currentsprite.Height];
+            hitter.currentsprite.GetData(hitterpixels);
+
+            Color[] punchedpixels = new Color[punched.currentsprite.Width * punched.currentsprite.Height];
+            punched.currentsprite.GetData(hitterpixels);
+
+            // kontrukta array med arrays som är alla horisontella segment av spriten och sedan hitta den array med en r'tt f'rgad pixel längst ut
         }
         // SUCKER PUNCH!!!
         protected override void Draw(GameTime gameTime) {
@@ -127,7 +133,7 @@ namespace Boxerman_v2 {
             effect1.Parameters["bChange"].SetValue(1.21428f);
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, effect1, Matrix.CreateScale(scale));           
             _spriteBatch.Draw(p1.blip, new Vector2(7.3f, 7.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.15f * p1.stamina, 0.18f), SpriteEffects.None, 0f);
-            _spriteBatch.Draw(p2.blip, new Vector2(57.3f, 7.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.15f * p2.stamina, 0.18f), SpriteEffects.FlipHorizontally, 0f);
+            _spriteBatch.Draw(p2.blip, new Vector2(72.3f, 7.5f), null, Color.White, 0f, Vector2.One, new Vector2(0.15f * p2.stamina, 0.18f), SpriteEffects.FlipHorizontally, 0f);
             _spriteBatch.End();
 
             // resilience
@@ -136,7 +142,7 @@ namespace Boxerman_v2 {
             effect1.Parameters["bChange"].SetValue(5.3095f);
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, effect1, Matrix.CreateScale(scale));
             _spriteBatch.Draw(p1.blip, new Vector2(7.3f, 9.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.15f * (100 - p1.resilience), 0.18f), SpriteEffects.None, 0f);
-            _spriteBatch.Draw(p2.blip, new Vector2(57.3f, 9.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.15f * (100 - p1.resilience), 0.18f), SpriteEffects.FlipHorizontally, 0f);
+            _spriteBatch.Draw(p2.blip, new Vector2(72.3f, 9.5f), null, Color.White, 0f, Vector2.One, new Vector2(0.15f * (100 - p1.resilience), 0.18f), SpriteEffects.FlipHorizontally, 0f);
             _spriteBatch.End();
 
             // p2

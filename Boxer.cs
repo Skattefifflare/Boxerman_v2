@@ -234,7 +234,7 @@ namespace Boxerman_v2 {
 
         }
         void GotHit() {
-            // kalla left / right
+            // kalla left / right med parameter som ökar speed
             // stun
 
             gotHit = false;
