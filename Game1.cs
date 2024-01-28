@@ -94,6 +94,12 @@ namespace Boxerman_v2 {
         }
 
         void Hitcheck(ref Boxer hitter, ref Boxer punched) {
+            float hitterGlove;
+            float punchedHead;
+
+            Color[] pixels = new Color[hitter.currentsprite.Width * hitter.currentsprite.Height];
+            hitter.currentsprite.GetData(pixels);
+            // kontrukta array med arrays som är alla horisontella segment av spriten och sedan hitta den array med en r'tt f'rgad pixel längst ut
 
         }
         // SUCKER PUNCH!!!

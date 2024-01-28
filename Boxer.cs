@@ -115,28 +115,29 @@ namespace Boxerman_v2 {
             }
             else if (!actionthread.IsAlive || currentaction == Idle) {
                 kstate = Game1.kstate;
+
                 switch (kstate) {
-                    case var _ when kstate.IsKeyDown(Keys.E):                        
+                    case var _ when (kstate.IsKeyDown(Keys.E) && facingright) || ((kstate.IsKeyDown(Keys.U)) && !facingright):                        
                         if (stamina > 10) {
                             currentaction = Jab;
                         }
-                        break;                   // Jab 
-                    case var _ when kstate.IsKeyDown(Keys.Q):                     // Uppercut
+                        break;                                                    
+                    case var _ when (kstate.IsKeyDown(Keys.Q) && facingright) || ((kstate.IsKeyDown(Keys.O)) && !facingright):
                         currentaction = Uppercut;
                         break;
-                    case var _ when kstate.IsKeyDown(Keys.W):                   // Hook
+                    case var _ when (kstate.IsKeyDown(Keys.W) && facingright) || ((kstate.IsKeyDown(Keys.I)) && !facingright):
                         currentaction = Hook;
                         break;
-                    case var _ when kstate.IsKeyDown(Keys.LeftShift):         // Block
+                    case var _ when (kstate.IsKeyDown(Keys.LeftShift) && facingright) || ((kstate.IsKeyDown(Keys.RightShift)) && !facingright):
                         currentaction = Block;
                         break;
-                    case var _ when kstate.IsKeyDown(Keys.D):               // Forward
+                    case var _ when (kstate.IsKeyDown(Keys.D) && facingright) || ((kstate.IsKeyDown(Keys.J)) && !facingright):
                         currentaction = (facingright) ? Right : Left;
                         break;
-                    case var _ when kstate.IsKeyDown(Keys.A):             // Backward
+                    case var _ when (kstate.IsKeyDown(Keys.A) && facingright) || ((kstate.IsKeyDown(Keys.L)) && !facingright):
                         currentaction = (facingright) ? Left : Right;
                         break;
-                    case var _ when kstate.IsKeyDown(Keys.LeftControl): // Dodge
+                    case var _ when (kstate.IsKeyDown(Keys.LeftControl) && facingright) || ((kstate.IsKeyDown(Keys.Space)) && !facingright):
                         currentaction = Dodge;
                         break;
                     default:                    
@@ -145,7 +146,6 @@ namespace Boxerman_v2 {
                         }
                         break;
                 }
-
                 if (!actionthread.IsAlive || currentaction != Idle) {
                     actionthread = new Thread(() => currentaction());
                     actionthread.Start();
@@ -184,8 +184,7 @@ namespace Boxerman_v2 {
                 currentsprite = spritematrix[2][i];
                 Thread.Sleep(25);
                 i++;
-            }
-            
+            }          
             Thread.Sleep(100);
         }
         void Hook() {
@@ -198,7 +197,7 @@ namespace Boxerman_v2 {
             Thread.Sleep(10);
             currentsprite = spritematrix[4][2];  
             isBlocking = true;
-            while (kstate.IsKeyDown(Keys.LeftShift)) {
+            while ((kstate.IsKeyDown(Keys.LeftShift) &&facingright) || (kstate.IsKeyDown(Keys.RightShift) && !facingright)) {
                 kstate = Game1.kstate;
                 currentsprite = spritematrix[4][2]; // behövs för ett edge-case
             }
@@ -226,7 +225,8 @@ namespace Boxerman_v2 {
 
         }
         void GotHit() {
-            // kod...
+            // kalla left / right
+            // stun
 
             gotHit = false;
         }
