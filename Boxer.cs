@@ -13,6 +13,9 @@ namespace Boxerman_v2 {
         public GraphicsDevice graphicsDevice = Game1.gd;
         Action currentaction;
         Thread actionthread;
+        Thread staminaregen;
+        Thread resilienceregen;
+
         public bool hasDoneHit;
         public bool gotHit;
         public bool isBlocking;
@@ -33,10 +36,15 @@ namespace Boxerman_v2 {
 
         public Boxer(bool dir, float pos) {
             currentaction = Idle;
+
             actionthread = new Thread(() => currentaction());
+            staminaregen = new Thread(() => StaminaRegen());
+            staminaregen.Start();
+            resilienceregen = new Thread(() => { });
+
             hasDoneHit = false;
-            isBlocking = false;
-            
+            gotHit = false;
+            isBlocking = false;           
 
             facingright = dir;
             this.pos = pos;
@@ -118,9 +126,7 @@ namespace Boxerman_v2 {
 
                 switch (kstate) {
                     case var _ when (kstate.IsKeyDown(Keys.E) && facingright) || ((kstate.IsKeyDown(Keys.U)) && !facingright):                        
-                        if (stamina > 10) {
-                            currentaction = Jab;
-                        }
+                        currentaction = Jab;                       
                         break;                                                    
                     case var _ when (kstate.IsKeyDown(Keys.Q) && facingright) || ((kstate.IsKeyDown(Keys.O)) && !facingright):
                         currentaction = Uppercut;
@@ -162,21 +168,24 @@ namespace Boxerman_v2 {
             Thread.Sleep(400);
         }
         void Jab() {
-            int i = 0;
-            while (!hasDoneHit && i <= 7) {
-                currentsprite = spritematrix[1][i];
-                Thread.Sleep(20);
-                i++;
-            }
-            i--;
-            while (i > 0) {
-                currentsprite = spritematrix[1][i];
-                Thread.Sleep(20);
+            if (stamina >= 10) {
+                stamina -= 10;
+                int i = 0;
+                while (!hasDoneHit && i <= 7) {
+                    currentsprite = spritematrix[1][i];
+                    Thread.Sleep(20);
+                    i++;
+                }
                 i--;
+                while (i > 0) {
+                    currentsprite = spritematrix[1][i];
+                    Thread.Sleep(20);
+                    i--;
+                }
+                Thread.Sleep(100);
+                // hitcheckern måste på något sätt säga till Jab att den har träffat och att animationen ska börja spelas i reverse
+                // spriten ska börja reversas när man träffar
             }
-            Thread.Sleep(100);
-            // hitcheckern måste på något sätt säga till Jab att den har träffat och att animationen ska börja spelas i reverse
-            // spriten ska börja reversas när man träffar
         }
         void Uppercut() {
             int i = 0;
@@ -229,6 +238,18 @@ namespace Boxerman_v2 {
             // stun
 
             gotHit = false;
+        }
+        void StaminaRegen() {
+            while (true) {
+                if (stamina < 100 && currentaction != Jab && currentaction != Uppercut && currentaction != Hook) {
+                    stamina += 1;
+                    Thread.Sleep(60);
+                }
+            }
+            
+        }
+        void ResilienceRegen() {
+
         }
     }
     

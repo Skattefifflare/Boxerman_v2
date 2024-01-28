@@ -19,3 +19,9 @@
 /processorParam:DebugMode=Auto
 /build:HueShader2.fx
 
+#begin PlayerShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:PlayerShader.fx
+

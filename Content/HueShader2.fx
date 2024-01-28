@@ -9,6 +9,11 @@
 
 Texture2D SpriteTexture;
 
+float rChange;
+float gChange;
+float bChange;
+
+
 
 sampler2D SpriteTextureSampler = sampler_state
 {
@@ -29,6 +34,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 	
     if (col.r != 0 && col.g != 0 && col.b != 0)
     {
+        //p2s handskar
         if (col.r == 0.6)
         {
             //153, 78, 65
@@ -36,8 +42,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
             col.g = 0.62;
             col.b = 0.255;
             //203, 158, 65
-        }        
-        // breakpoints nås aldrig
+        }               
         else if (col.r >= 0.45 && col.r <= 0.46)
         {   
             //117, 60, 50            
@@ -45,21 +50,19 @@ float4 MainPS(VertexShaderOutput input) : COLOR
             col.g = .47;
             col.b = .19;
             //167, 120, 50
-        }
+        }   
+        
         
         else
         {
-            col.r *= 1;
-            col.g *= 0.8682;
-            col.b *= 1.5057;
+            col.r *= rChange;
+            col.g *= gChange;
+            col.b *= bChange;
 
-        }
-        
-    }
-    
+        }        
+    }    
 	
     return col;
-
 }
 
 technique SpriteDrawing
