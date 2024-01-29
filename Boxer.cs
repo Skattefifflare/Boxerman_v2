@@ -32,7 +32,7 @@ namespace Boxerman_v2 {
         public Texture2D bigbar;
         public Texture2D blip;
 
-        List<List<Texture2D>> spritematrix;
+        public List<List<Texture2D>> spritematrix;
 
         public Boxer(bool dir, float pos) {
             currentaction = Idle;
@@ -51,7 +51,7 @@ namespace Boxerman_v2 {
 
             health = 100;
             stamina = 100;
-            resilience = 0;
+            resilience = 100;
 
             smallbar = Texture2D.FromFile(graphicsDevice, "../../../boxer/smallbar.png");
             bigbar = Texture2D.FromFile(graphicsDevice, "../../../boxer/bigbar.png");

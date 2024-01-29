@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using static System.Formats.Asn1.AsnWriter;
 using System.Threading;
+using System.Linq;
 
 namespace Boxerman_v2 {
     public class Game1 : Game {
@@ -31,7 +32,7 @@ namespace Boxerman_v2 {
         protected override void Initialize() {
             gd = GraphicsDevice;
             p1 = new Boxer(true, 10);
-            p2 = new Boxer(false, 40);
+            p2 = new Boxer(false, 0);
 
             effect1 = Content.Load<Effect>("HueShader2");
             //effect1.Parameters["hueChange"].SetValue(4f);
@@ -67,6 +68,9 @@ namespace Boxerman_v2 {
             
             kstate = Keyboard.GetState();
             p1.Boxerloop();
+            if (p1.spritematrix[1].Contains(p1.currentsprite) || p1.spritematrix[2].Contains(p1.currentsprite)) {
+                Hitcheck(ref p1, ref p2);
+            }
             p2.Boxerloop();
 
             //p2.Boxerloop();
@@ -94,20 +98,51 @@ namespace Boxerman_v2 {
         }
 
         void Hitcheck(ref Boxer hitter, ref Boxer punched) {
-            float hitterGlove;
-            float punchedHead;
+            float hitterGloveX = 0;
+            float punchedHeadX = 0;
 
             Color glovecolor = new Color(153, 78, 65);
             Color headcolor = new Color(88, 129, 87);
 
             Color[] hitterpixels = new Color[hitter.currentsprite.Width * hitter.currentsprite.Height];
             hitter.currentsprite.GetData(hitterpixels);
-
             Color[] punchedpixels = new Color[punched.currentsprite.Width * punched.currentsprite.Height];
             punched.currentsprite.GetData(hitterpixels);
 
+
+            Color[] buffer;
+
+            for (int i = 0; i < hitterpixels.Length; i += hitter.currentsprite.Width) {
+                buffer = new Color[hitter.currentsprite.Width];
+                Array.Copy(hitterpixels, i, buffer, 0, hitter.currentsprite.Width);
+                Array.Reverse(buffer, 0, buffer.Length);
+                
+                int X = Array.IndexOf(buffer, glovecolor);
+                if (X > hitterGloveX) {
+                    hitterGloveX = X;
+                }
+            }
+
+            for (int i = 0; i < punchedpixels.Length; i += 100) {
+                buffer = new Color[punched.currentsprite.Width];
+                Array.Copy(punchedpixels, i, buffer, 0, punched.currentsprite.Width);
+                Array.Reverse(buffer, 0, buffer.Length);
+                
+                int X = Array.IndexOf(buffer, headcolor);
+                if (X > punchedHeadX) {
+                    punchedHeadX = X;
+                }
+            }
+
+            if (hitter.facingright) {
+                if (hitter.pos + hitterGloveX >= punched.pos + punchedHeadX * 2) {
+                    punched.health -= 100;
+                }
+            }
+
             // kontrukta array med arrays som är alla horisontella segment av spriten och sedan hitta den array med en r'tt f'rgad pixel längst ut
         }
+
         // SUCKER PUNCH!!!
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(new Color(41, 44, 51));
