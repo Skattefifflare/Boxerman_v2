@@ -135,7 +135,7 @@ namespace Boxerman_v2 {
             }
 
             if (hitter.facingright) {
-                if (hitter.pos + hitterGloveX >= punched.pos + punchedHeadX * 2) {
+                if (hitter.pos + hitterGloveX >= punched.pos + punchedHeadX) {
                     punched.health -= 100;
                 }
             }
