@@ -23,6 +23,7 @@ namespace Boxerman_v2 {
 
         public bool facingright;
         public float pos;
+        public float glovepos;
 
         public int health;
         public int stamina;
@@ -183,6 +184,7 @@ namespace Boxerman_v2 {
                     i--;
                 }
                 Thread.Sleep(100);
+                hasDoneHit = false;
                 // hitcheckern måste på något sätt säga till Jab att den har träffat och att animationen ska börja spelas i reverse
                 // spriten ska börja reversas när man träffar
             }
@@ -218,16 +220,16 @@ namespace Boxerman_v2 {
         }
         void Right() {
             float init_pos = pos;
-            while (pos < init_pos + 4) {
+            while (pos < init_pos + 1) {
                 pos += 0.08f;
-                Thread.Sleep(2);
+                Thread.Sleep(8);
             }  
         }
         void Left() {
             float init_pos = pos;
-            while (pos > init_pos - 4) {
+            while (pos > init_pos - 1) {
                 pos -= 0.08f;
-                Thread.Sleep(2);
+                Thread.Sleep(8);
             }
         }       
         void Dodge() {
