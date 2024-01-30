@@ -103,32 +103,36 @@ namespace Boxerman_v2 {
 
             Color glovecolor = new Color(153, 78, 65);
             Color headcolor = new Color(88, 129, 87);
+            Texture2D hittersprite_temp = hitter.currentsprite;
+            Texture2D punchedsprite_temp = punched.currentsprite;
 
-            Color[] hitterpixels = new Color[hitter.currentsprite.Width * hitter.currentsprite.Height];
-            hitter.currentsprite.GetData(hitterpixels);
-            Color[] punchedpixels = new Color[punched.currentsprite.Width * punched.currentsprite.Height];
-            punched.currentsprite.GetData(hitterpixels);
+            Color[] hitterpixels = new Color[hittersprite_temp.Width * hittersprite_temp.Height];
+            hittersprite_temp.GetData(hitterpixels);
+            Color[] punchedpixels = new Color[punchedsprite_temp.Width * punchedsprite_temp.Height];
+            punchedsprite_temp.GetData(hitterpixels);
 
 
             Color[] buffer;
 
-            for (int i = 0; i < hitter.currentsprite.Height; i++) {
-                buffer = new Color[hitter.currentsprite.Width];
-                Array.Copy(hitterpixels, i * hitter.currentsprite.Width, buffer, 0, hitter.currentsprite.Width);
+            for (int i = 0; i < hittersprite_temp.Height; i++) {
+                
+                buffer = new Color[hittersprite_temp.Width];
+                Array.Copy(hitterpixels, i * hittersprite_temp.Width, buffer, 0, hittersprite_temp.Height);
                 int X = Array.LastIndexOf(buffer, glovecolor) + 1;
                 if (X > hitterGloveX) {
                     hitterGloveX = X;
                 }
             }
 
-            for (int i = 0; i < punched.currentsprite.Height; i++) {
-                buffer = new Color[punched.currentsprite.Width];
-                Array.Copy(punchedpixels, i * hitter.currentsprite.Width, buffer, 0, hitter.currentsprite.Width);
+            for (int i = 0; i < punchedsprite_temp.Height; i++) {
+                buffer = new Color[punchedsprite_temp.Width];
+                Array.Copy(punchedpixels, i * punchedsprite_temp.Width, buffer, 0, punchedsprite_temp.Height);
                 int X = Array.LastIndexOf(buffer, headcolor) + 1;
                 if (X > punchedHeadX) {
                     punchedHeadX = X;
                 }
             }
+
             /*
             for (int i = 0; i < hitterpixels.Length; i += hitter.currentsprite.Width) {
                 buffer = new Color[hitter.currentsprite.Width];
@@ -152,8 +156,8 @@ namespace Boxerman_v2 {
             }
             */
             if (hitter.facingright) {
-                if (hitter.pos + hitterGloveX >= punched.pos + (22 - punchedHeadX) * 2) {
-                    punched.health -= 100;
+                if (hitter.pos + hitterGloveX >= 30) {
+                    punched.health -= 1;
                     hitter.hasDoneHit = true;
                 }
             }
