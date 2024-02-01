@@ -22,6 +22,8 @@ namespace Boxerman_v2 {
 
         Effect effect1;
 
+        SpriteFont f1;
+
 
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
@@ -35,6 +37,8 @@ namespace Boxerman_v2 {
             p2 = new Boxer(false, 40);
 
             effect1 = Content.Load<Effect>("HueShader2");
+
+            f1 = Content.Load<SpriteFont>("Font1");
 
             base.Initialize();
         }
@@ -57,7 +61,6 @@ namespace Boxerman_v2 {
             // Use the minimum scale to maintain aspect ratio
             scale = Math.Min(scaleX, scaleY);
         }
-
         protected override void Update(GameTime gameTime) {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -67,9 +70,10 @@ namespace Boxerman_v2 {
             
             kstate = Keyboard.GetState();
             p1.Boxerloop();
+
             if (p1.spritematrix[1].Contains(p1.currentsprite) || p1.spritematrix[2].Contains(p1.currentsprite)) {
                 Hitcheck(ref p1, ref p2);                
-            }
+            }   
             p2.Boxerloop();
 
             //p2.Boxerloop();
@@ -94,12 +98,10 @@ namespace Boxerman_v2 {
             */
 
             base.Update(gameTime);
-        }
-
-        
+        }       
         void Hitcheck(ref Boxer hitter, ref Boxer punched) {
-            float hitterGloveX = 0;
-            float punchedHeadX = 0;
+            float gloveX = 0;
+            float headX = 0;
 
             Color glovecolor = new Color(153, 78, 65);
             Color headcolor = new Color(88, 129, 87);
@@ -112,6 +114,29 @@ namespace Boxerman_v2 {
             punchedsprite_temp.GetData(hitterpixels);
 
 
+            
+            //gloveX = hitterpixels.Select(a => a == glovecolor).Max(a => Array.IndexOf(hitterpixels, a) % 22);
+
+            foreach (var pixel in hitterpixels) {
+                if(pixel == glovecolor) {
+                    if (Array.IndexOf(hitterpixels, pixel) % hittersprite_temp.Width > gloveX) {
+                        gloveX = Array.IndexOf(hitterpixels, pixel) % hittersprite_temp.Width;
+                    }
+                }
+            }
+            //headX = punchedpixels.Select(a => a == headcolor).Max(a => Array.IndexOf(punchedpixels, a) % 22);
+
+            foreach (var pixel in punchedpixels) {
+                if (pixel == headcolor) {
+                    if (Array.IndexOf(punchedpixels, pixel) % punchedsprite_temp.Width > headX) {
+                        headX = Array.IndexOf(punchedpixels, pixel) % punchedsprite_temp.Width;
+                    }
+                } 
+            }
+
+
+            
+            /*
             Color[] buffer;
 
             for (int i = 0; i < hittersprite_temp.Height; i++) {
@@ -133,7 +158,7 @@ namespace Boxerman_v2 {
                 }
             }
 
-            /*
+            
             for (int i = 0; i < hitterpixels.Length; i += hitter.currentsprite.Width) {
                 buffer = new Color[hitter.currentsprite.Width];
                 Array.Copy(hitterpixels, i, buffer, 0, hitter.currentsprite.Width);
@@ -155,14 +180,19 @@ namespace Boxerman_v2 {
                 }
             }
             */
+
             if (hitter.facingright) {
-                if (hitter.pos + hitterGloveX >= 30) {
+                if (hitter.pos + gloveX >= 30) {
                     punched.health -= 1;
                     hitter.hasDoneHit = true;
                 }
             }
-
-            // kontrukta array med arrays som är alla horisontella segment av spriten och sedan hitta den array med en r'tt f'rgad pixel längst ut
+            else if (!hitter.facingright) {
+                if (hitter.pos - gloveX < punched.pos + headX) {
+                    punched.health -= 1;
+                    hitter.hasDoneHit = true;
+                }
+            }
         }
 
         // SUCKER PUNCH!!!
@@ -182,6 +212,10 @@ namespace Boxerman_v2 {
             _spriteBatch.Draw(p2.blip, new Vector2(42.3f, 4.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f * p2.health, 0.3f), SpriteEffects.FlipHorizontally, 0f);
             _spriteBatch.Draw(p2.smallbar, new Vector2(57, 7), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.FlipHorizontally, 0f);
             _spriteBatch.Draw(p2.smallbar, new Vector2(57, 9), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.FlipHorizontally, 0f);
+
+            _spriteBatch.DrawString(f1, $"{1 / timedif}", new Vector2(1, 0), Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(f1, " |\nV", new Vector2(30, 12), Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
+
             _spriteBatch.End();
 
             // stamina

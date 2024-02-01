@@ -174,7 +174,7 @@ namespace Boxerman_v2 {
                 int i = 0;
                 while (!hasDoneHit && i <= 7) {
                     currentsprite = spritematrix[1][i];
-                    Thread.Sleep(20);
+                    Thread.Sleep(20);                   
                     i++;
                 }
                 i--;
