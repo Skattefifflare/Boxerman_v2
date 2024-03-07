@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using static System.Formats.Asn1.AsnWriter;
 using System.Threading;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Boxerman_v2 {
     public class Game1 : Game {
@@ -129,7 +130,7 @@ namespace Boxerman_v2 {
                     if ((hitter.facingright && hitterpos > punchedpos) || (!hitter.facingright && hitterpos < punchedpos)) {
                         if (!punched.isBlocking) {
                             //punched.gotHit = true;
-                            punched.health -= 10;
+                            punched.health -= 50;
                         }                           
                         hitter.hasDoneHit = true;
                     }
@@ -142,48 +143,58 @@ namespace Boxerman_v2 {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(new Color(41, 44, 51));
 
+            if (p1.health > 0 && p2.health > 0) {
+                // unshadade grejer
+                _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(scale));
+                _spriteBatch.Draw(p1.currentsprite, new Vector2(p1.pos, 60 - 22), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(p1.bigbar, new Vector2(7, 4), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.None, 0f);
+                _spriteBatch.Draw(p1.blip, new Vector2(7.3f, 4.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f * p1.health, 0.3f), SpriteEffects.None, 0f);
+                _spriteBatch.Draw(p1.smallbar, new Vector2(7, 7), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.None, 0f);
+                _spriteBatch.Draw(p1.smallbar, new Vector2(7, 9), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.None, 0f);
 
-            // unshadade grejer
-            _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(scale));
-            _spriteBatch.Draw(p1.currentsprite, new Vector2(p1.pos, 60 - 22), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-            _spriteBatch.Draw(p1.bigbar, new Vector2(7, 4), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.None, 0f);
-            _spriteBatch.Draw(p1.blip, new Vector2(7.3f, 4.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f * p1.health, 0.3f), SpriteEffects.None, 0f);
-            _spriteBatch.Draw(p1.smallbar, new Vector2(7, 7), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.None, 0f);
-            _spriteBatch.Draw(p1.smallbar, new Vector2(7, 9), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.None, 0f);
+                _spriteBatch.Draw(p2.bigbar, new Vector2(42, 4), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.FlipHorizontally, 0f);
+                _spriteBatch.Draw(p2.blip, new Vector2(42.3f, 4.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f * p2.health, 0.3f), SpriteEffects.FlipHorizontally, 0f);
+                _spriteBatch.Draw(p2.smallbar, new Vector2(57, 7), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.FlipHorizontally, 0f);
+                _spriteBatch.Draw(p2.smallbar, new Vector2(57, 9), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.FlipHorizontally, 0f);
+                //_spriteBatch.DrawString(font, "l", new Vector2(p2.pos, 10), Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
+                //_spriteBatch.DrawString(font, "i", new Vector2(p2.pos + p2.currentsprite.Width, 10), Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
+                _spriteBatch.End();
 
-            _spriteBatch.Draw(p2.bigbar, new Vector2(42, 4), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.FlipHorizontally, 0f);
-            _spriteBatch.Draw(p2.blip, new Vector2(42.3f, 4.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f * p2.health, 0.3f), SpriteEffects.FlipHorizontally, 0f);
-            _spriteBatch.Draw(p2.smallbar, new Vector2(57, 7), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.FlipHorizontally, 0f);
-            _spriteBatch.Draw(p2.smallbar, new Vector2(57, 9), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.FlipHorizontally, 0f);
-            _spriteBatch.DrawString(font, "l", new Vector2(p2.pos, 10), Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
-            _spriteBatch.DrawString(font, "i", new Vector2(p2.pos + p2.currentsprite.Width, 10), Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
-            _spriteBatch.End();
+                // stamina
+                effect1.Parameters["rChange"].SetValue(1.28787f);
+                effect1.Parameters["gChange"].SetValue(3.0909f);
+                effect1.Parameters["bChange"].SetValue(1.21428f);
+                _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, effect1, Matrix.CreateScale(scale));
+                _spriteBatch.Draw(p1.blip, new Vector2(7.3f, 7.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.15f * p1.stamina, 0.18f), SpriteEffects.None, 0f);
+                _spriteBatch.Draw(p2.blip, new Vector2(72.3f, 7.5f), null, Color.White, 0f, Vector2.One, new Vector2(0.15f * p2.stamina, 0.18f), SpriteEffects.FlipHorizontally, 0f);
+                _spriteBatch.End();
 
-            // stamina
-            effect1.Parameters["rChange"].SetValue(1.28787f);
-            effect1.Parameters["gChange"].SetValue(3.0909f);
-            effect1.Parameters["bChange"].SetValue(1.21428f);
-            _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, effect1, Matrix.CreateScale(scale));           
-            _spriteBatch.Draw(p1.blip, new Vector2(7.3f, 7.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.15f * p1.stamina, 0.18f), SpriteEffects.None, 0f);
-            _spriteBatch.Draw(p2.blip, new Vector2(72.3f, 7.5f), null, Color.White, 0f, Vector2.One, new Vector2(0.15f * p2.stamina, 0.18f), SpriteEffects.FlipHorizontally, 0f);
-            _spriteBatch.End();
+                // resilience
+                effect1.Parameters["rChange"].SetValue(0.15656f);
+                effect1.Parameters["gChange"].SetValue(3f);
+                effect1.Parameters["bChange"].SetValue(5.3095f);
+                _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, effect1, Matrix.CreateScale(scale));
+                _spriteBatch.Draw(p1.blip, new Vector2(7.3f, 9.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.15f * (100 - p1.resilience), 0.18f), SpriteEffects.None, 0f);
+                _spriteBatch.Draw(p2.blip, new Vector2(72.3f, 9.5f), null, Color.White, 0f, Vector2.One, new Vector2(0.15f * (100 - p1.resilience), 0.18f), SpriteEffects.FlipHorizontally, 0f);
+                _spriteBatch.End();
 
-            // resilience
-            effect1.Parameters["rChange"].SetValue(0.15656f);
-            effect1.Parameters["gChange"].SetValue(3f);
-            effect1.Parameters["bChange"].SetValue(5.3095f);
-            _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, effect1, Matrix.CreateScale(scale));
-            _spriteBatch.Draw(p1.blip, new Vector2(7.3f, 9.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.15f * (100 - p1.resilience), 0.18f), SpriteEffects.None, 0f);
-            _spriteBatch.Draw(p2.blip, new Vector2(72.3f, 9.5f), null, Color.White, 0f, Vector2.One, new Vector2(0.15f * (100 - p1.resilience), 0.18f), SpriteEffects.FlipHorizontally, 0f);
-            _spriteBatch.End();
+                // p2
+                effect1.Parameters["rChange"].SetValue(1f);
+                effect1.Parameters["gChange"].SetValue(0.8682f);
+                effect1.Parameters["bChange"].SetValue(1.5057f);
+                _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, effect1, Matrix.CreateScale(scale));
+                _spriteBatch.Draw(p2.currentsprite, new Vector2(p2.pos, 60 - 22), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);
+                _spriteBatch.End();
 
-            // p2
-            effect1.Parameters["rChange"].SetValue(1f);
-            effect1.Parameters["gChange"].SetValue(0.8682f);
-            effect1.Parameters["bChange"].SetValue(1.5057f);
-            _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, effect1, Matrix.CreateScale(scale));
-            _spriteBatch.Draw(p2.currentsprite, new Vector2(p2.pos, 60 - 22), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0f);            
-            _spriteBatch.End();
+            }
+            else {
+                _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, null, Matrix.CreateScale(scale));
+                string winner = (p1.health > 0 ? "P1" : "P2");
+                _spriteBatch.DrawString(font, $"{winner} WON!", new Vector2(27, 20), Color.White, 0f, Vector2.Zero, 0.4f, SpriteEffects.None, 0f);
+                _spriteBatch.End();
+
+            }
+
 
             base.Draw(gameTime);
         }
