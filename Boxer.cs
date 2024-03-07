@@ -32,7 +32,8 @@ namespace Boxerman_v2 {
         public Texture2D bigbar;
         public Texture2D blip;
 
-        List<List<Texture2D>> spritematrix;
+        public List<List<Texture2D>> spritematrix;
+        public List<List<(int, int)>> hitmatrix;
 
         public Boxer(bool dir, float pos) {
             currentaction = Idle;
@@ -108,7 +109,37 @@ namespace Boxerman_v2 {
                 new List<Texture2D>{
                     Texture2D.FromFile(graphicsDevice, $"../../../boxer/Idle/Idle0.png"),
                 } // 7 : Dodge              
-            }; 
+            };
+            hitmatrix = new List<List<(int, int)>> {
+                //item1 is head
+                //item2 is glove
+                new List<(int, int)> {
+                    (7, 9),
+                    (9, 10)
+                },
+                new List<(int, int)> {
+                    (7, 10),
+                    (7, 11),
+                    (7, 12),
+                    (8, 14),
+                    (8, 16),
+                    (8, 18),
+                    (9, 20),
+                    (10, 22),
+                },
+                new List<(int, int)> {
+                    (0, 0),
+                },
+                new List<(int, int)> {
+                    (0, 0),
+                },
+                new List<(int, int)> {
+                    // "head" pos is glovepos so that a punch on the blocking oppenents gloves will retract
+                    (9, 9),
+                    (9, 9),
+                    (9, 9)
+                },
+            };
         }
 
         
@@ -183,6 +214,7 @@ namespace Boxerman_v2 {
                     i--;
                 }
                 Thread.Sleep(100);
+                hasDoneHit = false;
                 // hitcheckern måste på något sätt säga till Jab att den har träffat och att animationen ska börja spelas i reverse
                 // spriten ska börja reversas när man träffar
             }
@@ -218,16 +250,16 @@ namespace Boxerman_v2 {
         }
         void Right() {
             float init_pos = pos;
-            while (pos < init_pos + 4) {
+            while (pos < init_pos + 1) {
                 pos += 0.08f;
-                Thread.Sleep(2);
+                Thread.Sleep(10);
             }  
         }
         void Left() {
             float init_pos = pos;
-            while (pos > init_pos - 4) {
+            while (pos > init_pos - 1) {
                 pos -= 0.08f;
-                Thread.Sleep(2);
+                Thread.Sleep(10);
             }
         }       
         void Dodge() {
@@ -251,6 +283,21 @@ namespace Boxerman_v2 {
         void ResilienceRegen() {
 
         }
+
+
+
+        public (int, int) GetPositions() {
+            foreach(List<Texture2D> list in spritematrix){
+                if (list.Contains(currentsprite)) {
+                    int list_index = spritematrix.IndexOf(list);
+                    int tex_index = list.IndexOf(currentsprite);
+
+                    int headpos = hitmatrix[list_index][tex_index].Item1;
+                    int glovepos = hitmatrix[list_index][tex_index].Item2;
+                    return (headpos, glovepos); 
+                }               
+            }
+            return(0, 0);
+        }
     }
-    
 }

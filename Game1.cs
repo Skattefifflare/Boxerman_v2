@@ -10,6 +10,8 @@ namespace Boxerman_v2 {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        SpriteFont font;
+
         private float scale;
 
         public static float timedif;
@@ -33,6 +35,8 @@ namespace Boxerman_v2 {
             p1 = new Boxer(true, 10);
             p2 = new Boxer(false, 40);
 
+
+            font = Content.Load<SpriteFont>("defaultFont");
             effect1 = Content.Load<Effect>("HueShader2");
             //effect1.Parameters["hueChange"].SetValue(4f);
 
@@ -66,10 +70,17 @@ namespace Boxerman_v2 {
 
             
             kstate = Keyboard.GetState();
-            p1.Boxerloop();
-            p2.Boxerloop();
+            if (p1.health > 0 && p2.health > 0) {
+                p1.Boxerloop();
+                ProperHitCheck(ref p1, ref p2);
+                p2.Boxerloop();
+                ProperHitCheck(ref p2, ref p1);
+            }
 
-            //p2.Boxerloop();
+
+
+
+
             /*
             Color[] pixels = new Color[p1.currentsprite.Width * p1.currentsprite.Height];
             p1.currentsprite.GetData(pixels);
@@ -92,7 +103,7 @@ namespace Boxerman_v2 {
 
             base.Update(gameTime);
         }
-
+        /*
         void Hitcheck(ref Boxer hitter, ref Boxer punched) {
             float hitterGlove;
             float punchedHead;
@@ -107,6 +118,25 @@ namespace Boxerman_v2 {
             punched.currentsprite.GetData(hitterpixels);
 
             // kontrukta array med arrays som är alla horisontella segment av spriten och sedan hitta den array med en r'tt f'rgad pixel längst ut
+        }
+        */
+        void ProperHitCheck(ref Boxer hitter, ref Boxer punched) {
+            if (!hitter.hasDoneHit) {
+                if (hitter.spritematrix[1].Contains(hitter.currentsprite) || hitter.spritematrix[2].Contains(hitter.currentsprite)) {
+                    
+                    var hitterpos = hitter.pos + (hitter.facingright ? hitter.GetPositions().Item2 : hitter.currentsprite.Width - hitter.GetPositions().Item2);
+                    var punchedpos = punched.pos + (punched.facingright ? punched.GetPositions().Item1 : punched.currentsprite.Width - punched.GetPositions().Item1);
+                    if ((hitter.facingright && hitterpos > punchedpos) || (!hitter.facingright && hitterpos < punchedpos)) {
+                        if (!punched.isBlocking) {
+                            //punched.gotHit = true;
+                            punched.health -= 10;
+                        }                           
+                        hitter.hasDoneHit = true;
+                    }
+                    
+                }
+            }
+            
         }
         // SUCKER PUNCH!!!
         protected override void Draw(GameTime gameTime) {
@@ -125,6 +155,8 @@ namespace Boxerman_v2 {
             _spriteBatch.Draw(p2.blip, new Vector2(42.3f, 4.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f * p2.health, 0.3f), SpriteEffects.FlipHorizontally, 0f);
             _spriteBatch.Draw(p2.smallbar, new Vector2(57, 7), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.FlipHorizontally, 0f);
             _spriteBatch.Draw(p2.smallbar, new Vector2(57, 9), null, Color.White, 0f, Vector2.Zero, new Vector2(0.3f, 0.3f), SpriteEffects.FlipHorizontally, 0f);
+            _spriteBatch.DrawString(font, "l", new Vector2(p2.pos, 10), Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(font, "i", new Vector2(p2.pos + p2.currentsprite.Width, 10), Color.White, 0f, Vector2.Zero, 0.2f, SpriteEffects.None, 0f);
             _spriteBatch.End();
 
             // stamina
