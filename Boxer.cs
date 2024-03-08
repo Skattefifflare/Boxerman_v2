@@ -73,7 +73,6 @@ namespace Boxerman_v2 {
                     Texture2D.FromFile(graphicsDevice, "../../../boxer/Jab/Jab6.png"),
                     Texture2D.FromFile(graphicsDevice, "../../../boxer/Jab/Jab7.png")
                 },// 1 : Jab
-                
                 new List<Texture2D>{
                     Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut0.png"),
                     Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut1.png"),
@@ -91,7 +90,7 @@ namespace Boxerman_v2 {
                     Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut13.png"),
                     Texture2D.FromFile(graphicsDevice, "../../../boxer/Uppercut/Uppercut14.png")
 
-                },// 2 : Uppercut           
+                },// 2 : Uppercut
                 new List<Texture2D>{
                     Texture2D.FromFile(graphicsDevice, "../../../boxer/Idle/Idle0.png"),
                 },// 3 : Hook
@@ -108,7 +107,7 @@ namespace Boxerman_v2 {
                 },// 6 : Backward
                 new List<Texture2D>{
                     Texture2D.FromFile(graphicsDevice, $"../../../boxer/Idle/Idle0.png"),
-                } // 7 : Dodge              
+                } // 7 : Dodge
             };
             hitmatrix = new List<List<(int, int)>> {
                 //item1 is head
@@ -116,7 +115,7 @@ namespace Boxerman_v2 {
                 new List<(int, int)> {
                     (7, 9),
                     (9, 10)
-                },
+                },// 0 : Idle
                 new List<(int, int)> {
                     (7, 10),
                     (7, 11),
@@ -126,19 +125,42 @@ namespace Boxerman_v2 {
                     (8, 18),
                     (9, 20),
                     (10, 22),
-                },
+                },// 1 : Jab
+                new List<(int, int)> {
+                    (7, -100),//0
+                    (7, -100),
+                    (7, -100),
+                    (7, -100),//3
+                    (8, -100),
+                    (8, -100),
+                    (9, -100),//6
+                    (9, -100),
+                    (9, -100),
+                    (9, -100),//9
+                    (9, 15),
+                    (9, 14),
+                    (9, 13),//12
+                    (9, 12),
+                    (8, -100)
+                },// 2 : Uppercut 
                 new List<(int, int)> {
                     (0, 0),
-                },
-                new List<(int, int)> {
-                    (0, 0),
-                },
+                },// 3 : Hook
                 new List<(int, int)> {
                     // "head" pos is glovepos so that a punch on the blocking oppenents gloves will retract
                     (9, 9),
                     (9, 9),
                     (9, 9)
-                },
+                },// 4 : Block
+                new List<(int, int)> {
+                    (7, 9)
+                },// 5 : Forward
+                new List<(int, int)> {
+                    (7, 9)
+                },// 6 : Backward
+                new List<(int, int)> {
+                    (7, 9)
+                }// 6 : Backward
             };
         }
 
@@ -220,13 +242,18 @@ namespace Boxerman_v2 {
             }
         }
         void Uppercut() {
-            int i = 0;
-            while (!hasDoneHit && i <= 14) {
-                currentsprite = spritematrix[2][i];
-                Thread.Sleep(25);
-                i++;
-            }          
-            Thread.Sleep(100);
+            if (stamina >= 15) {
+                stamina -= 15;
+                int i = 0;
+                while (!hasDoneHit && i <= 14) {
+                    currentsprite = spritematrix[2][i];
+                    Thread.Sleep(20);
+                    i++;
+                }
+                Thread.Sleep(100);
+                hasDoneHit = false;
+            }
+            
         }
         void Hook() {
 
@@ -253,7 +280,8 @@ namespace Boxerman_v2 {
             while (pos < init_pos + 1) {
                 pos += 0.08f;
                 Thread.Sleep(10);
-            }  
+            }
+            Thread.Sleep(100);
         }
         void Left() {
             float init_pos = pos;
@@ -261,13 +289,18 @@ namespace Boxerman_v2 {
                 pos -= 0.08f;
                 Thread.Sleep(10);
             }
+            Thread.Sleep(100);
         }       
         void Dodge() {
-
+            float init_pos = pos;
+            while (pos > init_pos - 5) {
+                pos -= (facingright? 0.20f : -0.20f);
+                Thread.Sleep(10);
+            }
         }
         void GotHit() {
-            // kalla left / right med parameter som ökar speed
-            // stun
+            
+            Thread.Sleep(2000);
 
             gotHit = false;
         }

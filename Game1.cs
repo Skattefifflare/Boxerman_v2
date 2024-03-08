@@ -33,8 +33,8 @@ namespace Boxerman_v2 {
 
         protected override void Initialize() {
             gd = GraphicsDevice;
-            p1 = new Boxer(true, 10);
-            p2 = new Boxer(false, 40);
+            p1 = new Boxer(true, 10+10);
+            p2 = new Boxer(false, 40-10);
 
 
             font = Content.Load<SpriteFont>("defaultFont");
@@ -123,15 +123,16 @@ namespace Boxerman_v2 {
         */
         void ProperHitCheck(ref Boxer hitter, ref Boxer punched) {
             if (!hitter.hasDoneHit) {
-                if (hitter.spritematrix[1].Contains(hitter.currentsprite) || hitter.spritematrix[2].Contains(hitter.currentsprite)) {
-                    
+                if (hitter.spritematrix[1].Contains(hitter.currentsprite) || hitter.spritematrix[2].Contains(hitter.currentsprite)) {                    
                     var hitterpos = hitter.pos + (hitter.facingright ? hitter.GetPositions().Item2 : hitter.currentsprite.Width - hitter.GetPositions().Item2);
                     var punchedpos = punched.pos + (punched.facingright ? punched.GetPositions().Item1 : punched.currentsprite.Width - punched.GetPositions().Item1);
                     if ((hitter.facingright && hitterpos > punchedpos) || (!hitter.facingright && hitterpos < punchedpos)) {
                         if (!punched.isBlocking) {
-                            //punched.gotHit = true;
-                            punched.health -= 50;
-                        }                           
+                            punched.gotHit = true;
+                            punched.health -= 1;
+
+                            // uppercut gör mer skada
+                        }
                         hitter.hasDoneHit = true;
                     }
                     
