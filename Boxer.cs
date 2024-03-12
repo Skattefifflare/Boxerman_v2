@@ -167,7 +167,7 @@ namespace Boxerman_v2 {
         
         public Texture2D currentsprite;
         
-        
+        // Splitta spriteändringar och actions till två olika trådar
         public void Boxerloop() { 
             if (gotHit && currentaction != GotHit) {
                 currentaction = GotHit;
@@ -275,6 +275,8 @@ namespace Boxerman_v2 {
             currentsprite = spritematrix[4][0];
             
         }
+
+        // rita sprites
         void Right() {
             float init_pos = pos;
             while (pos < init_pos + 1) {
@@ -304,6 +306,8 @@ namespace Boxerman_v2 {
 
             gotHit = false;
         }
+
+
         void StaminaRegen() {
             while (true) {
                 if (stamina < 100 && currentaction != Jab && currentaction != Uppercut && currentaction != Hook) {

@@ -78,10 +78,6 @@ namespace Boxerman_v2 {
                 ProperHitCheck(ref p2, ref p1);
             }
 
-
-
-
-
             /*
             Color[] pixels = new Color[p1.currentsprite.Width * p1.currentsprite.Height];
             p1.currentsprite.GetData(pixels);
@@ -133,6 +129,9 @@ namespace Boxerman_v2 {
 
                             // uppercut gör mer skada
                         }
+                        else {
+                            punched.resilience += 10;
+                        }
                         hitter.hasDoneHit = true;
                     }
                     
@@ -176,7 +175,7 @@ namespace Boxerman_v2 {
                 effect1.Parameters["bChange"].SetValue(5.3095f);
                 _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, null, effect1, Matrix.CreateScale(scale));
                 _spriteBatch.Draw(p1.blip, new Vector2(7.3f, 9.3f), null, Color.White, 0f, Vector2.Zero, new Vector2(0.15f * (100 - p1.resilience), 0.18f), SpriteEffects.None, 0f);
-                _spriteBatch.Draw(p2.blip, new Vector2(72.3f, 9.5f), null, Color.White, 0f, Vector2.One, new Vector2(0.15f * (100 - p1.resilience), 0.18f), SpriteEffects.FlipHorizontally, 0f);
+                _spriteBatch.Draw(p2.blip, new Vector2(72.3f, 9.5f), null, Color.White, 0f, Vector2.One, new Vector2(0.15f * (100 - p2.resilience), 0.18f), SpriteEffects.FlipHorizontally, 0f);
                 _spriteBatch.End();
 
                 // p2
